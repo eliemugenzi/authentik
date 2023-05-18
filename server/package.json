@@ -20,18 +20,23 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^9.0.0",
-    "@nestjs/core": "^9.0.0",
+    "@nestjs/axios": "^2.0.0",
+    "@nestjs/common": "^9.4.1",
+    "@nestjs/core": "^9.4.1",
+    "@nestjs/event-emitter": "^1.4.1",
     "@nestjs/jwt": "^10.0.3",
+    "@nestjs/mapped-types": "^1.2.2",
+    "@nestjs/microservices": "^9.4.1",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.14.0",
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

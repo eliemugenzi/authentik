@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@nestjs/axios": "^2.0.0",
+    "@nestjs/event-emitter": "^1.4.1",
+    "axios": "^1.4.0"
+  }
+}
