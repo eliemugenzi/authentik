@@ -1,0 +1,19 @@
+
+
+
+.alert {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.login-form {
+    margin-top: 10%;
+    margin-left: 35%;
+    margin-right: 35%;
+}
+
+.logo {
+    width: 4rem;
+    height: 4rem;
+    align-self: center;
+}
