@@ -1,0 +1,70 @@
+@import "./colors.scss";
+
+.cropping {
+  position: relative;
+  &[data-profile-canvas="true"] {
+    [class~="ant-upload"] {
+      height: 54px;
+      width: 54px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+  }
+  &__profile_hint {
+    display: block;
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    bottom: 0px;
+    right: 0px;
+    background-color: $primary;
+    color: $white;
+    border-radius: 12px;
+    line-height: 24px;
+    text-align: center;
+    font-size: 14px;
+    z-index: 1;
+  }
+  &__upload {
+    > span {
+      background-color: $primary-ultra-light !important;
+      padding: 0px !important;
+      position: relative;
+    }
+    &__hint {
+      display: flex;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba($primary-ultra-light, 0.7) !important;
+    }
+    &__inner {
+      &__canvas {
+        position: relative;
+        &::before {
+          height: 0;
+          content: "";
+          display: block;
+          padding-bottom: calc(100% / (1600 / 900));
+        }
+        &[data-profile-canvas="true"] {
+          &::before {
+            padding-bottom: calc(100%);
+          }
+        }
+        & > :first-child {
+          object-fit: cover;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

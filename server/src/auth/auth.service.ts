@@ -39,7 +39,7 @@ export class AuthService {
     const userData = {
       ...body,
       password: hashedPassword,
-      status: UserStatus.PENDING,
+      status: UserStatus.UNVERIFIED,
       birth_date: new Date(body.birth_date),
     };
 
