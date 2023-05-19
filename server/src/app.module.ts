@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { DBService } from './db/db.service';
 import { NotificationsModule } from './notifications/notifications.module';
 import { EventsService } from './events/events.service';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EventsService } from './events/events.service';
     NotificationsModule,
     HttpModule,
     EventEmitterModule.forRoot(),
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService, DBService, EventsService],

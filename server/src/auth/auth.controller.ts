@@ -48,6 +48,8 @@ export class AuthController {
     return httpResponse({
       status: HttpStatus.OK,
       data: result,
+      message:
+        'Please check the link that was sent to your email address to reset your password',
     });
   }
 

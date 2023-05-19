@@ -1,0 +1,15 @@
+.login-form {
+    margin-top: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.submit-button {
+    background-color: aqua;
+}
+
+.logo {
+    width: 4rem;
+    height: 4rem;
+    align-self: center;
+}
