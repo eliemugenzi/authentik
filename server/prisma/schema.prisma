@@ -20,6 +20,7 @@ model User {
   nationality    String?
   avatar         String?
   national_id    String?
+  identification_document String?
   marital_status UserMaritalStatus
   status         UserStatus
   password       String

@@ -27,7 +27,7 @@ const Login = () => {
     }
   }, [mutation?.data]);
   return (
-    <Layout className="h-screen bg-white">
+    <Layout className="h-screen bg-transparent">
       <div className="bg-wite py-8 px-6 shadow rounded-lg sm:px-10 login-form">
         <img src="https://png2.cleanpng.com/sh/d26f34069bf8a52be0a11e5fc18a0ebf/L0KzQYm3VMI3N6d9fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5pzRd9qbnHqdb7sjwQufaRqip8AYXW0RYbtU8Zkbmc9TpCCN0O5SIm7V8E2OmU8Sak5NEO3RIe6TwBvbz==/kisspng-computer-icons-login-management-user-5ae155f36cf686.7736884715247170434463.png" alt="AuthLogo"  className="logo"/>
         <h3 className="text-lg my-5 font-semibold">Login to Authentik</h3>
@@ -88,6 +88,9 @@ const Login = () => {
             >
               Login
             </Button>
+          </Form.Item>
+          <Form.Item>
+            <p>Don't have an account? <a href="/register">Register</a></p>
           </Form.Item>
         </Form>
       </div>
