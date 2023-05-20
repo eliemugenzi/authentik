@@ -6,9 +6,10 @@ import { AuthController } from './auth.controller';
 import { DBService } from 'src/db/db.service';
 import { DbModule } from 'src/db/db.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Module({
-  providers: [AuthService, DBService, JwtService],
+  providers: [AuthService, DBService, JwtService, RolesGuard],
   controllers: [AuthController],
   imports: [
     DbModule,

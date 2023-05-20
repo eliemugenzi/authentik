@@ -5,25 +5,28 @@ import {
   LoadingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Spin, Alert, Layout, Card, Avatar, List, Row, Col } from "antd";
+import { Spin, Alert, Layout, Card, Avatar, List, Row, Col, Button, Result } from "antd";
 import api from "../../helpers/axios";
 import { isEmpty } from "lodash";
 
 import "./styles.css";
 import { useEffect } from "react";
+import NavBar from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Profile = () => {
+    const navigate = useNavigate()
   const { isLoading, isError, data, error } = useQuery("get-profile", () => {
     return api.get("/profile");
   });
 
   useEffect(() => {
     if (isError) {
-      window.location.href = "/";
+      navigate('/')
     }
-  }, [isError]);
+  }, [isError, navigate]);
 
   const profileData = [
     {
@@ -53,11 +56,12 @@ const Profile = () => {
   ];
 
   if (error?.message) {
-    window.location.href = "/";
+    navigate('/')
   }
 
   return (
-    <Layout className="px-36 py-32 bg-white h-screen">
+    <Layout className="px-36 bg-white h-screen">
+        <NavBar />
       <Helmet>
         <title>
           {`${data?.data?.first_name || ""} ${
@@ -70,7 +74,12 @@ const Profile = () => {
       {isError && <Alert type="error" message={error?.message} />}
       {!isEmpty(data?.data) && (
         <>
-          <h3>
+          
+
+          <Result
+    status="success"
+    title={
+        <h3>
             Welcome Back, <b>{data?.data?.first_name}</b> &nbsp;{" "}
             <CheckCircleOutlined
               style={{
@@ -78,6 +87,17 @@ const Profile = () => {
               }}
             />
           </h3>
+    }
+
+   
+  />
+  {data?.data?.role === 'ADMIN' && (
+    <div>
+        <Button onClick={()=>{
+            navigate('/users')
+        }}>View all Users</Button>
+    </div>
+  )}
 
           <h2 className="font-semibold my-5">Profile Information</h2>
           <Card title={`${data?.data?.first_name} ${data?.data?.last_name}`}>

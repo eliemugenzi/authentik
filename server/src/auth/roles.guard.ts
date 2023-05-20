@@ -6,10 +6,12 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { Reflector } from '@nestjs/core';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private readonly jwt: JwtService) {}
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector, private readonly jwt: JwtService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const ctx = context.switchToHttp();
@@ -29,11 +31,18 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET_KEY,
       });
 
-      // if (req.headers.role && user.role !== req.headers.role) {
-      //   return false;
-      // }
-
       req['user'] = user;
+
+      const roles = this.reflector.get<UserRole[]>(
+        'roles',
+        context.getHandler(),
+      );
+
+      console.log('ROLES', roles);
+
+      if (!roles) {
+        return true;
+      }
 
       return true;
     } catch (error) {

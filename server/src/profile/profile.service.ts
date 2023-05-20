@@ -1,7 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { DBService } from 'src/db/db.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { UserStatus } from '@prisma/client';
+import { UserRole, UserStatus } from '@prisma/client';
 
 @Injectable()
 export class ProfileService {
@@ -45,5 +51,81 @@ export class ProfileService {
     });
 
     return updatedUser;
+  }
+
+  async getUsers({ currentUser }) {
+    const foundUser = await this.db.user.findFirst({
+      where: {
+        id: currentUser.id,
+      },
+    });
+
+    if (!foundUser) {
+      throw new UnauthorizedException('Unauthorized access');
+    }
+
+    if (foundUser.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Unauthorized access');
+    }
+    const users = await this.db.user.findMany({
+      where: {
+        NOT: {
+          id: currentUser.id,
+        },
+      },
+    });
+
+    return users;
+  }
+
+  async verifyUser({
+    currentUser,
+    userId,
+  }: {
+    currentUser: Record<string, any>;
+    userId: string;
+  }) {
+    const foundUser = await this.db.user.findFirst({
+      where: {
+        id: currentUser.id,
+      },
+    });
+
+    if (!foundUser) {
+      throw new UnauthorizedException('Unauthorized access');
+    }
+
+    if (foundUser.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('Forbidden access');
+    }
+
+    const userToVerify = await this.db.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!userToVerify) {
+      throw new NotFoundException('A user you want to verify does not exist!');
+    }
+
+    if (userToVerify.id === foundUser.id) {
+      throw new ForbiddenException('Forbidden Access');
+    }
+
+    if (userToVerify.status === UserStatus.VERIFIED) {
+      throw new ConflictException('A user is already verified');
+    }
+
+    const verifiedUser = await this.db.user.update({
+      where: {
+        id: userToVerify.id,
+      },
+      data: {
+        status: UserStatus.VERIFIED,
+      },
+    });
+
+    return verifiedUser;
   }
 }

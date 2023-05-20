@@ -7,6 +7,7 @@ import Profile from './pages/profile';
 import EditProfile from './pages/profile/edit';
 import ForgotPassword from './pages/forgot-password';
 import Register from './pages/register';
+import UserList from './pages/users';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     Component: Register,
+  },
+  {
+    path: '/users',
+    Component: UserList,
   }
 ])
 
