@@ -22,8 +22,9 @@ model User {
   national_id    String?
   identification_document String?
   marital_status UserMaritalStatus
-  status         UserStatus
+  status         UserStatus @default(UNVERIFIED)
   password       String
+  role UserRole @default(USER)
 
   created_at DateTime @default(now())
 
@@ -46,4 +47,9 @@ enum UserStatus {
   UNVERIFIED
   PENDING
   VERIFIED
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

@@ -17,3 +17,9 @@
     height: 4rem;
     align-self: center;
 }
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+}

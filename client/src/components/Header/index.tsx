@@ -1,17 +1,36 @@
-import { Menu } from 'antd';
+import { Menu, Layout } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-const Header = ()=> {
+const NavBar = ()=> {
+    const navigate = useNavigate();
 
     const menuItems = [
         {
-            label: 'Edit Profile'
+            key: 1,
+            label: <a href='/profile'>Home</a>,
+            onclick: ()=>{
+                window.location.href='/profile'
+            }
+        },
+        {
+            label: <a href='/profile/edit'>Edit Profile</a>,
+            key: 2,
+        },
+        {
+            label: 'Log Out',
+            key: 3,
+            onClick: ()=>{
+                console.log('HAPPENING?')
+                localStorage.clear();
+                navigate('/')
+            }
         }
     ]
     return (
-        <div className="header">
-            <p>Header</p>
-        </div>
+        <Layout.Header className='bg-transparent my-5 px-0' style={{background: 'transparent'}}>
+            <Menu theme='light' mode='horizontal' items={menuItems}></Menu>
+        </Layout.Header>
     )
 }
 
-export default Header
+export default NavBar
