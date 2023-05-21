@@ -1,5 +1,7 @@
 import { Avatar, Button, Layout, List } from "antd"
+import { useEffect } from 'react';
 import { useQuery, useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import NavBar from "../../components/Header"
 import api from "../../helpers/axios";
 import { isEmpty } from "lodash";
@@ -7,8 +9,9 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 
 
 const UserList = ()=>{
+    const navigate = useNavigate()
 
-    const { isLoading, data, isError, refetch } = useQuery('get-users', () => api.get('/profile/list'))
+    const { data, isError, refetch } = useQuery('get-users', () => api.get('/profile/list'))
 
     const verifyMutation = useMutation((data: Record<string, unknown>)=>{
         const { userId } = data;
@@ -20,6 +23,12 @@ const UserList = ()=>{
        await verifyMutation.mutateAsync(data);
      refetch()
     }
+
+    useEffect(() => {
+        if (isError) {
+          navigate('/')
+        }
+      }, [isError, navigate]);
 
 
 

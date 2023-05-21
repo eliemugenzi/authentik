@@ -12,6 +12,8 @@ import {
   Upload,
 } from "antd";
 import { useMutation, useQuery } from "react-query";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import "./styles.css";
 import api from "../../../helpers/axios";
 import { isEmpty, omit } from "lodash";
@@ -19,13 +21,20 @@ import dayjs from "dayjs";
 import { LeftOutlined, UploadOutlined } from "@ant-design/icons";
 import NavBar from "../../../components/Header";
 const Register = () => {
+  const navigate = useNavigate()
   const mutation = useMutation((data) => {
     return api.put("/profile", data);
   });
 
-  const { isLoading, data, refetch } = useQuery("get-profile", () => {
+  const { isLoading, data, refetch, isError } = useQuery("get-profile", () => {
     return api.get("/profile");
   });
+
+  useEffect(() => {
+    if (isError) {
+      navigate('/')
+    }
+  }, [isError, navigate]);
 
   const onFinish = async (values: any) => {
     await mutation.mutateAsync({
