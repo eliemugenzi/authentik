@@ -5,7 +5,18 @@ import {
   LoadingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Spin, Alert, Layout, Card, Avatar, List, Row, Col, Button, Result } from "antd";
+import {
+  Spin,
+  Alert,
+  Layout,
+  Card,
+  Avatar,
+  List,
+  Row,
+  Col,
+  Button,
+  Result,
+} from "antd";
 import api from "../../helpers/axios";
 import { isEmpty } from "lodash";
 
@@ -17,14 +28,14 @@ import { useNavigate } from "react-router-dom";
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Profile = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const { isLoading, isError, data, error } = useQuery("get-profile", () => {
     return api.get("/profile");
   });
 
   useEffect(() => {
     if (isError) {
-      navigate('/')
+      navigate("/");
     }
   }, [isError, navigate]);
 
@@ -56,12 +67,12 @@ const Profile = () => {
   ];
 
   if (error?.message) {
-    navigate('/')
+    navigate("/");
   }
 
   return (
     <Layout className="px-36 bg-white h-screen">
-        <NavBar />
+      <NavBar />
       <Helmet>
         <title>
           {`${data?.data?.first_name || ""} ${
@@ -74,30 +85,33 @@ const Profile = () => {
       {isError && <Alert type="error" message={error?.message} />}
       {!isEmpty(data?.data) && (
         <>
-          
-
           <Result
-    status="success"
-    title={
-        <h3>
-            Welcome Back, <b>{data?.data?.first_name}</b> &nbsp;{" "}
-            <CheckCircleOutlined
-              style={{
-                color: "skyblue",
-              }}
-            />
-          </h3>
-    }
-
-   
-  />
-  {data?.data?.role === 'ADMIN' && (
-    <div>
-        <Button onClick={()=>{
-            navigate('/users')
-        }}>View all Users</Button>
-    </div>
-  )}
+            icon={<UserOutlined />}
+            status="info"
+            title={
+              <h3>
+                Welcome Back, <b>{data?.data?.first_name}</b> &nbsp;{" "}
+                {data?.data?.status === "VERIFIED" && (
+                  <CheckCircleOutlined
+                    style={{
+                      color: "skyblue",
+                    }}
+                  />
+                )}
+              </h3>
+            }
+          />
+          {data?.data?.role === "ADMIN" && (
+            <div>
+              <Button
+                onClick={() => {
+                  navigate("/users");
+                }}
+              >
+                View all Users
+              </Button>
+            </div>
+          )}
 
           <h2 className="font-semibold my-5">Profile Information</h2>
           <Card title={`${data?.data?.first_name} ${data?.data?.last_name}`}>
