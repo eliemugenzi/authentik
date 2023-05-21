@@ -8,10 +8,15 @@ import {
 import { DBService } from 'src/db/db.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { UserRole, UserStatus } from '@prisma/client';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { emit } from 'process';
 
 @Injectable()
 export class ProfileService {
-  constructor(private readonly db: DBService) {}
+  constructor(
+    private readonly db: DBService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   async getMyProfile(user: any) {
     const currentUser = await this.db.user.findFirst({
@@ -124,6 +129,16 @@ export class ProfileService {
       data: {
         status: UserStatus.VERIFIED,
       },
+    });
+
+    const emailMessage = `
+    Dear ${verifiedUser.first_name} ${verifiedUser.last_name}, your account has been marked as verified. Congrats!
+    `;
+
+    this.eventEmitter.emit('send-mail', {
+      email: verifiedUser.email,
+      subject: 'Your account has been verified!',
+      message: emailMessage,
     });
 
     return verifiedUser;
