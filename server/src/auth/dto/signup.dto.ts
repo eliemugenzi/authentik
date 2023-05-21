@@ -1,6 +1,7 @@
 import { UserGender, UserMaritalStatus } from '@prisma/client';
-import { IsDate, IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsNotEmpty, Matches } from 'class-validator';
 import { Type } from 'class-transformer';
+import { mediumPassword } from 'src/helpers/password';
 
 export class SignUpDto {
   @IsNotEmpty()
@@ -27,5 +28,9 @@ export class SignUpDto {
   marital_status: UserMaritalStatus;
 
   @IsNotEmpty()
+  @Matches(mediumPassword, {
+    message:
+      'Password should have at least 1 lowecase letter, 1 uppercase letter, 1 digit, 1 special character, and should be between 8 and 16 characters long.',
+  })
   password: string;
 }
