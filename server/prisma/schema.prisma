@@ -25,10 +25,27 @@ model User {
   status         UserStatus @default(UNVERIFIED)
   password       String
   role UserRole @default(USER)
+  otp_codes OTPCode[]
 
   created_at DateTime @default(now())
 
   @@map("users")
+}
+
+model OTPCode {
+  id String @id @default(uuid()) @db.Uuid
+  code String
+  status CodeStatus
+  user_id String @unique @db.Uuid
+  user User @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@map("otp_codes")
+}
+
+enum CodeStatus {
+  ACTIVE
+  EXPIRED
 }
 
 enum UserGender {

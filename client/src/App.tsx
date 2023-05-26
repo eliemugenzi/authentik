@@ -8,6 +8,7 @@ import EditProfile from './pages/profile/edit';
 import ForgotPassword from './pages/forgot-password';
 import Register from './pages/register';
 import UserList from './pages/users';
+import VerifyOTPCode from './pages/verify-otp';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: '/users',
     Component: UserList,
+  },
+  {
+    path: '/verify-otp',
+    Component: VerifyOTPCode,
   }
 ])
 

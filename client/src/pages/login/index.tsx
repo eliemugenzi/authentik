@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import "./styles.css";
 import api from "../../helpers/axios";
 import { useEffect } from "react";
+import { redirect } from 'react-router-dom';
 import { isEmpty } from "lodash";
 const Login = () => {
   const mutation = useMutation((data) => {
@@ -10,22 +11,18 @@ const Login = () => {
   });
 
   const onFinish = async (values: any) => {
-    mutation.mutate({
+    mutation.mutateAsync({
       ...values,
+    }).then((res)=>{
+       console.log('RESSS', res)
+
+       window.location.href='/verify-otp'
+    }).catch((err)=>{
+      console.log('ERR', err);
     });
+
   };
 
-  useEffect(() => {
-    if (!isEmpty(mutation?.data)) {
-      const authToken = mutation?.data?.data?.access_token;
-      const user = mutation.data?.data;
-      localStorage.setItem("token", authToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log("WHATS UP", { user, authToken });
-
-      window.location.href = "/profile";
-    }
-  }, [mutation?.data]);
   return (
     <Layout className="h-screen bg-transparent">
       <div className="bg-wite py-8 px-6 shadow rounded-lg sm:px-10 login-form">
