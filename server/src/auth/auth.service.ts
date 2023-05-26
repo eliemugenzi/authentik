@@ -7,13 +7,14 @@ import {
 import { DBService } from 'src/db/db.service';
 import { SignUpDto } from './dto/signup.dto';
 import { comparePassword, hashPassword } from 'src/helpers/password';
-import { UserStatus } from '@prisma/client';
+import { CodeStatus, UserStatus } from '@prisma/client';
 import { omit } from 'lodash';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { randomOTP } from 'src/helpers/randomOTP';
 
 @Injectable()
 export class AuthService {
@@ -65,21 +66,28 @@ export class AuthService {
       throw new BadRequestException('Invalid Credentials');
     }
 
-    const jwtPayload = {
-      id: foundUser.id,
-      first_name: foundUser.first_name,
-      last_name: foundUser.last_name,
-      email: foundUser.email,
-    };
+    await this.db.oTPCode.deleteMany({
+      where: {
+        user_id: foundUser.id,
+      },
+    });
 
-    const jwtToken = await this.jwtService.signAsync(jwtPayload, {
-      secret: process.env.JWT_SECRET_KEY,
-      expiresIn: '7d',
+    const createdCode = await this.db.oTPCode.create({
+      data: {
+        code: String(randomOTP()),
+        user_id: foundUser.id,
+        status: CodeStatus.ACTIVE,
+      },
+    });
+
+    this.eventEmitter.emit('send-mail', {
+      email: foundUser.email,
+      subject: 'Two-Factor Authentication',
+      message: `Dear ${foundUser.first_name}, kindly verify your login using the following OTP: ${createdCode.code}`,
     });
 
     return {
       ...omit(foundUser, ['password']),
-      access_token: jwtToken,
     };
   }
 
@@ -135,5 +143,47 @@ export class AuthService {
       console.log(error);
       throw new BadRequestException('Unable to reset your password');
     }
+  }
+
+  async verifyOtp(code: string) {
+    const foundOtp = await this.db.oTPCode.findFirst({
+      where: {
+        code: String(code),
+        status: CodeStatus.ACTIVE,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!foundOtp) {
+      throw new NotFoundException('Invalid OTP');
+    }
+
+    await this.db.oTPCode.update({
+      data: {
+        status: CodeStatus.EXPIRED,
+      },
+      where: {
+        user_id: foundOtp.user_id,
+      },
+    });
+
+    const jwtPayload = {
+      id: foundOtp.user.id,
+      first_name: foundOtp.user.first_name,
+      last_name: foundOtp.user.last_name,
+      email: foundOtp.user.email,
+    };
+
+    const jwtToken = await this.jwtService.signAsync(jwtPayload, {
+      secret: process.env.JWT_SECRET_KEY,
+      expiresIn: '7d',
+    });
+
+    return {
+      ...omit(foundOtp.user, ['password']),
+      access_token: jwtToken,
+    };
   }
 }

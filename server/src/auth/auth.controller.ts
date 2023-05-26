@@ -12,6 +12,7 @@ import httpResponse, { HttpResponse } from 'src/helpers/httpResponse';
 import { LoginDto } from './dto/login.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { VerifyCodeDto } from './dto/verify-code.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -64,6 +65,17 @@ export class AuthController {
     return httpResponse({
       status: HttpStatus.OK,
       message: 'Your password was changed successfully!',
+      data: result,
+    });
+  }
+
+  @Post('/verify-otp')
+  @HttpCode(HttpStatus.OK)
+  async verifyCode(@Body() body: VerifyCodeDto) {
+    const result = await this.authService.verifyOtp(body.code);
+    return httpResponse({
+      status: HttpStatus.OK,
+      message: 'You successfully logged-in!',
       data: result,
     });
   }
