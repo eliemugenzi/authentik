@@ -13,8 +13,8 @@
 }
 
 .logo {
-    width: 4rem;
-    height: 4rem;
+    width: 5.5rem !important;
+    height: 5.5rem !important;
     align-self: center;
     margin: auto;
 }

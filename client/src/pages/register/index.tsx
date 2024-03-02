@@ -4,6 +4,7 @@ import "./styles.css";
 import api from "../../helpers/axios";
 import { useEffect } from "react";
 import { isEmpty } from "lodash";
+import logo from '../../assets/images.png';
 const Register = () => {
   const mutation = useMutation((data) => {
     return api.post("/auth/signup", data);
@@ -56,9 +57,15 @@ const Register = () => {
     <Layout className="bg-transparent">
       <div className="bg-wite py-8 px-6 shadow rounded-lg sm:px-10 login-form">
         <img
-          src="https://png2.cleanpng.com/sh/d26f34069bf8a52be0a11e5fc18a0ebf/L0KzQYm3VMI3N6d9fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5pzRd9qbnHqdb7sjwQufaRqip8AYXW0RYbtU8Zkbmc9TpCCN0O5SIm7V8E2OmU8Sak5NEO3RIe6TwBvbz==/kisspng-computer-icons-login-management-user-5ae155f36cf686.7736884715247170434463.png"
+          src={logo}
           alt="AuthLogo"
           className="logo"
+          // width={100}
+          // height={100}
+          // style={{
+          //   height: 100,
+          //   width: 100
+          // }}
         />
         <h3 className="text-lg my-5 font-semibold">
           Create an Authentik account

@@ -1,13 +1,22 @@
 import { UserGender, UserMaritalStatus } from '@prisma/client';
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, Matches } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  Matches,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { mediumPassword } from 'src/helpers/password';
 
 export class SignUpDto {
+  @MinLength(3)
   @IsNotEmpty()
   first_name: string;
 
   @IsNotEmpty()
+  @MinLength(3)
   last_name: string;
 
   @IsNotEmpty()

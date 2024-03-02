@@ -1153,6 +1153,11 @@ electron-to-chromium@^1.4.284:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.399.tgz#df8a63d1f572124ad8b5d846e38b0532ad7d9d54"
   integrity sha512-+V1aNvVgoWNWYIbMOiQ1n5fRIaY4SlQ/uRlrsCjLrUwr/3OvQgiX2f5vdav4oArVT9TnttJKcPCqjwPNyZqw/A==
 
+esbuild-wasm@^0.18.11:
+  version "0.18.11"
+  resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.18.11.tgz#b146f432e3d2aa394c06985fd620c85fee353f5e"
+  integrity sha512-Xo93C8GgLSWEJH0VwU+V0bSR9lJA7zlZ8MEGZJl8HVrEvhQ4ksSROcoUXR30zITl2Iz1FINxjJwEMH3NEZaA5g==
+
 esbuild@^0.17.5:
   version "0.17.19"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.17.19.tgz#087a727e98299f0462a3d0bcdd9cd7ff100bd955"
